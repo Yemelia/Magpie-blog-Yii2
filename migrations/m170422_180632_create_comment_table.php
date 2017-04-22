@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `comment`.
  */
-class m170422_133901_create_comment_table extends Migration
+class m170422_180632_create_comment_table extends Migration
 {
     /**
      * @inheritdoc
@@ -50,7 +50,6 @@ class m170422_133901_create_comment_table extends Migration
             'CASCADE'
         );
     }
-
     /**
      * @inheritdoc
      */

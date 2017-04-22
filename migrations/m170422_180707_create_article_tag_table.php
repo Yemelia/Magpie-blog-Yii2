@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `article_tag`.
  */
-class m170422_131551_create_article_tag_table extends Migration
+class m170422_180707_create_article_tag_table extends Migration
 {
     /**
      * @inheritdoc
@@ -48,7 +48,6 @@ class m170422_131551_create_article_tag_table extends Migration
             'CASCADE'
         );
     }
-
     /**
      * @inheritdoc
      */

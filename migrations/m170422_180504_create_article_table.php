@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `article`.
  */
-class m170422_131510_create_article_table extends Migration
+class m170422_180504_create_article_table extends Migration
 {
     /**
      * @inheritdoc
@@ -25,7 +25,6 @@ class m170422_131510_create_article_table extends Migration
             'category_id'=>$this->integer(),
         ]);
     }
-
     /**
      * @inheritdoc
      */

@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `user`.
  */
-class m170422_131542_create_user_table extends Migration
+class m170422_180615_create_user_table extends Migration
 {
     /**
      * @inheritdoc
@@ -21,7 +21,6 @@ class m170422_131542_create_user_table extends Migration
             'photo'=>$this->string()->defaultValue(null)
         ]);
     }
-
     /**
      * @inheritdoc
      */
