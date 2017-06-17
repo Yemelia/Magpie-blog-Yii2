@@ -2,8 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\Article;
+use app\models\Category;
+use app\models\Tag;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -60,18 +65,53 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $data = Article::getAll(1);
+        $popularArticles = Article::getPopular();
+        $recentArticles = Article::getRecent();
+        $categories = Category::getAll();
+
+        return $this->render('index',[
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'populars' => $popularArticles,
+            'recent' => $recentArticles,
+            'categories' => $categories
+        ]);
     }
 
-    public function actionView()
+    public function actionView($id)
     {
-        return $this->render('single');
+        $article = Article::findOne($id);
+        $tags = $article->tags;
+        $popularArticles = Article::getPopular();
+        $recentArticles = Article::getRecent();
+        $categories = Category::getAll();
+
+        return $this->render('single',[
+            'article' => $article,
+            'tags' => $tags,
+            'populars' => $popularArticles,
+            'recent' => $recentArticles,
+            'categories' => $categories
+        ]);
     }
 
-    public function actionCategory()
+    public function actionCategory($id)
     {
-        return $this->render('category');
+        $data = Article::getArticlesByCategory($id);
+        $popularArticles = Article::getPopular();
+        $recentArticles = Article::getRecent();
+        $categories = Category::getAll();
+
+        return $this->render('category',[
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'populars' => $popularArticles,
+            'recent' => $recentArticles,
+            'categories' => $categories
+            ]);
     }
+
 
     /**
      * Login action.
