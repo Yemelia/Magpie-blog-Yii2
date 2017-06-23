@@ -1,39 +1,38 @@
 <?php
 
 namespace app\models;
+use Yii;
+use yii\db\ActiveRecord;
+use \yii\web\IdentityInterface;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+/**
+ * This is the model class for table "user".
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property integer $isAdmin
+ * @property string $photo
+ *
+ * @property Comment[] $comments
+ */
+
+class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    public function rules()
+    {
+        return [
+            [['name', 'email', 'password', 'photo'], 'string', 'max' => 255],
+        ];
+    }
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
-    /**
+     /**
      * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return User::findOne($id);
     }
 
     /**
@@ -50,22 +49,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return null;
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
 
     /**
      * @inheritdoc
@@ -80,7 +63,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        // TODO: Implement getAuthKey() method.
     }
 
     /**
@@ -91,14 +74,35 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return $this->authKey === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
+    public static function findByEmail($email)
+    {
+        return User::find()->where(['email'=>$email])->one();
+    }
+
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return ($this->password == $password) ? true : false;
+    }
+
+    public function create()
+    {
+        return $this->save(false);
+    }
+
+    public function saveFromVk($uid, $first_name, $photo)
+    {
+        $user = User::findOne($uid);
+        if ($user)
+        {
+            return Yii::$app->user->login($user);
+        }
+        $this->id = $uid;
+        $this->name = $first_name;
+        $this->photo = $photo;
+
+        $this->create();
+
+        return Yii::$app->user->login($this);
+
     }
 }
