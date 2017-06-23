@@ -65,7 +65,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $data = Article::getAll(1);
+        $data = Article::getAll(3);
         $popularArticles = Article::getPopular();
         $recentArticles = Article::getRecent();
         $categories = Category::getAll();
@@ -86,6 +86,10 @@ class SiteController extends Controller
         $popularArticles = Article::getPopular();
         $recentArticles = Article::getRecent();
         $categories = Category::getAll();
+        if (!Yii::$app->user->isGuest)
+        {
+            $article->newView();
+        }
 
         return $this->render('single',[
             'article' => $article,

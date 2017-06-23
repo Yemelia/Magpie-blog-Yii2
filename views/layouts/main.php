@@ -19,7 +19,7 @@ PublicAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>Magpie</title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -93,7 +93,7 @@ PublicAsset::register($this);
 
                         <p> Phone: +375 29 1639177</p>
 
-                        <p>yiiblog.com</p>
+                        <p>magpie.com</p>
                     </div>
                 </aside>
             </div>

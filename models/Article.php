@@ -185,4 +185,15 @@ class Article extends \yii\db\ActiveRecord
         return Article::find()->orderBy('date desc')->limit(4)->all();
     }
 
+    public function newView()
+    {
+        $this->viewed = (int)$this->viewed + 1;
+        return $this->create();
+    }
+
+    public function create()
+    {
+        return $this->save(false);
+    }
+
 }
