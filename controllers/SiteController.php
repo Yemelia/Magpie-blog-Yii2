@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Article;
 use app\models\Category;
+use app\models\Comment;
+use app\models\CommentFrom;
 use app\models\Tag;
 use Yii;
 use yii\data\Pagination;
@@ -86,6 +88,10 @@ class SiteController extends Controller
         $popularArticles = Article::getPopular();
         $recentArticles = Article::getRecent();
         $categories = Category::getAll();
+        $comments = $article->getArticleComments();
+        $commentForm = new CommentFrom();
+
+
         if (!Yii::$app->user->isGuest)
         {
             $article->newView();
@@ -96,7 +102,9 @@ class SiteController extends Controller
             'tags' => $tags,
             'populars' => $popularArticles,
             'recent' => $recentArticles,
-            'categories' => $categories
+            'categories' => $categories,
+            'comments' => $comments,
+            'commentForm'=>$commentForm
         ]);
     }
 
@@ -143,4 +151,20 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionComment($id)
+    {
+        $model = new CommentFrom();
+
+        if(Yii::$app->request->isPost)
+        {
+            $model->load(Yii::$app->request->post());
+            if($model->saveComment($id))
+            {
+                Yii::$app->getSession()->setFlash('comment', 'Your comment will be added soon!');
+                return $this->redirect(['site/view', 'id' => $id]);
+            }
+        }
+    }
+
 }

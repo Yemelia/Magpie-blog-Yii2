@@ -9,12 +9,13 @@ use \yii\web\IdentityInterface;
  * This is the model class for table "user".
  *
  * @property integer $id
+ * @property integer $vk_id
  * @property string $name
  * @property string $email
  * @property string $password
  * @property integer $isAdmin
  * @property string $photo
- *
+ * *
  * @property Comment[] $comments
  */
 
@@ -91,12 +92,15 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function saveFromVk($uid, $first_name, $photo)
     {
-        $user = User::findOne($uid);
+
+        $user = User::find()->where(['vk_id' => $uid])->one();
+
         if ($user)
         {
             return Yii::$app->user->login($user);
         }
-        $this->id = $uid;
+
+        $this->vk_id = $uid;
         $this->name = $first_name;
         $this->photo = $photo;
 
@@ -104,5 +108,10 @@ class User extends ActiveRecord implements IdentityInterface
 
         return Yii::$app->user->login($this);
 
+    }
+
+    public function getImage()
+    {
+        return $this->photo;
     }
 }
