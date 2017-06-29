@@ -95,7 +95,7 @@ class SiteController extends Controller
         if (!ArticleViews::getUser(ArticleViews::getUserIp(), $article->id))
         {
             $model = new ArticleViews();
-            $model->user_ip = Yii::$app->getRequest()->getUserIP();
+            $model->user_ip = ArticleViews::getUserIp();
             $model->article_id = $article->id;
             if($model->save())
             {
