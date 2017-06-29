@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Article;
+use app\models\ArticleViews;
 use app\models\Category;
 use app\models\Comment;
 use app\models\CommentFrom;
@@ -91,11 +92,16 @@ class SiteController extends Controller
         $comments = $article->getArticleComments();
         $commentForm = new CommentFrom();
 
-
-        if (!Yii::$app->user->isGuest)
+        if (!ArticleViews::getUser(ArticleViews::getUserIp(), $article->id))
         {
-            $article->newView();
-        }
+            $model = new ArticleViews();
+            $model->user_ip = Yii::$app->getRequest()->getUserIP();
+            $model->article_id = $article->id;
+            if($model->save())
+            {
+                $article->ViedCounter();
+            }
+       }
 
         return $this->render('single',[
             'article' => $article,

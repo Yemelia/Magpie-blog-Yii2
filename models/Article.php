@@ -6,6 +6,7 @@ use Yii;
 use app\models\ImageUpload;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
 /**
  * This is the model class for table "article".
@@ -185,7 +186,7 @@ class Article extends \yii\db\ActiveRecord
         return Article::find()->orderBy('date desc')->limit(4)->all();
     }
 
-    public function newView()
+    public function ViedCounter()
     {
         $this->viewed = (int)$this->viewed + 1;
         return $this->create();
@@ -205,6 +206,11 @@ class Article extends \yii\db\ActiveRecord
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['article_id' => 'id']);
+    }
+
+    public function getViews()
+    {
+        return $this->hasMany(ArticleViews::className(), ['article_id' => 'id']);
     }
 
     public function getArticleComments()
