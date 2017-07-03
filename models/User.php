@@ -21,9 +21,26 @@ use \yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTER = 'register';
+    public $rememberMe = true;
+    public $_user = false;
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_LOGIN] = ['email', 'password', 'rememberMe'];
+        $scenarios[self::SCENARIO_REGISTER] = ['name', 'email', 'password'];
+
+        return $scenarios;
+    }
+
     public function rules()
     {
         return [
+            [['name', 'email', 'password'], 'required', 'on' => self::SCENARIO_REGISTER],
+            [['email', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
             [['name', 'email', 'password', 'photo'], 'string', 'max' => 255],
         ];
     }
@@ -49,7 +66,6 @@ class User extends ActiveRecord implements IdentityInterface
 
         return null;
     }
-
 
     /**
      * @inheritdoc
@@ -80,11 +96,6 @@ class User extends ActiveRecord implements IdentityInterface
         return User::find()->where(['email'=>$email])->one();
     }
 
-    public function validatePassword($password)
-    {
-        return ($this->password == $password) ? true : false;
-    }
-
     public function create()
     {
         return $this->save(false);
@@ -113,5 +124,38 @@ class User extends ActiveRecord implements IdentityInterface
     public function getImage()
     {
         return $this->photo;
+    }
+
+    public function validatePassword()
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUserByEmail();
+
+            if (!$user || $this->password != $user->password) {
+                $this->addError('password', 'Incorrect email or password.');
+
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    public function login()
+    {
+        if ($this->validatePassword()) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        }
+
+        return false;
+    }
+
+    public function getUserByEmail()
+    {
+        if ($this->_user === false) {
+            $this->_user = User::findByEmail($this->email);
+        }
+
+        return $this->_user;
     }
 }
