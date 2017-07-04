@@ -45,7 +45,7 @@ class AuthController extends Controller
 
     public function actionSignup()
     {
-        $model = new SignupForm();
+        $model = $model = new User(['scenario' => User::SCENARIO_REGISTER]);;
 
         if(Yii::$app->request->isPost)
         {

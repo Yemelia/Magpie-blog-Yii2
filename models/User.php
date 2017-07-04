@@ -23,7 +23,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
 
     const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTER = 'register';
+    const SCENARIO_REGISTER = 'signup';
     public $rememberMe = true;
     public $_user = false;
 
@@ -144,7 +144,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function login()
     {
         if ($this->validatePassword()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUserByEmail(), $this->rememberMe ? 3600*24*30 : 0);
         }
 
         return false;
@@ -157,5 +157,13 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return $this->_user;
+    }
+
+    public function signup()
+    {
+        if($this->validate())
+        {
+            return $this->create();
+        }
     }
 }
