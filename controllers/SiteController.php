@@ -7,6 +7,7 @@ use app\models\ArticleViews;
 use app\models\Category;
 use app\models\Comment;
 use app\models\CommentFrom;
+use app\models\Rate;
 use app\models\Tag;
 use Yii;
 use yii\data\Pagination;
@@ -171,6 +172,16 @@ class SiteController extends Controller
                 return $this->redirect(['site/view', 'id' => $id]);
             }
         }
+    }
+
+    public function actionAddRate(){
+        if(Yii::$app->request->isAjax){
+            $model = new Rate();
+            if(!Rate::findOne(Yii::$app->user->getId())){
+                $model->create();
+            }
+        }
+        
     }
 
 }

@@ -28,6 +28,11 @@ use yii\widgets\ActiveForm;
                                 <a href="#" class="btn btn-default"><?= $tag->title; ?></a>
                             <?php } ?>
                         </div>
+                        <div class="rate">
+                            <span>Rate this article:</span>
+                            <div id="article-rate"></div>
+                        </div>
+
 
                         <div class="social-share">
 							<span

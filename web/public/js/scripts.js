@@ -66,7 +66,41 @@
         });
     }());
 
+    /* === Article Rate === */
 
+    (function () {
+        $('#article-rate').raty({
+        });
+    }());
+
+    (function () {
+        $('#article-rate img').on('click', function (e) {
+            var rate = $(this).attr('alt');
+            var id = getUrlVars()['id'];
+            $.ajax({
+                url: 'add-rate',
+                type: 'post',
+                data: {'rate' : rate, 'article_id' : id},
+                success:function (data) {
+
+                }
+            });
+
+        });
+    }());
+
+    function getUrlVars()
+    {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
 
 
 })(jQuery);
