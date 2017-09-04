@@ -21,6 +21,7 @@ use yii\web\View;
  * @property integer $user_id
  * @property integer $status
  * @property integer $category_id
+ * @property float $article_rate
  *
  * @property ArticleTag[] $articleTags
  * @property Comment[] $comments
@@ -216,6 +217,18 @@ class Article extends \yii\db\ActiveRecord
     public function getArticleComments()
     {
         return $this->getComments()->where(['status' => 1])->all();
+    }
+
+    public static function RateCounter($new_rate_model, $number_of_rate)
+    {
+        $article_id = $new_rate_model->article_id;
+        $article = Article::findOne($article_id);
+
+        $new_rate = ($article->article_rate + $new_rate_model->rate)/($number_of_rate + 1);
+        $article->article_rate = round($new_rate);
+        $article->save(false);
+
+        return $article->article_rate;
     }
 
 }

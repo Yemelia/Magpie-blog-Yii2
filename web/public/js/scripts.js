@@ -78,16 +78,23 @@
             var rate = $(this).attr('alt');
             var id = getUrlVars()['id'];
             $.ajax({
-                url: 'add-rate',
+                url: '/ajax/add-rate',
                 type: 'post',
+                dataType: 'json',
                 data: {'rate' : rate, 'article_id' : id},
                 success:function (data) {
-
+                    currentRate(data['rate']);
                 }
             });
-
         });
     }());
+
+    function currentRate(rate) {
+        $('#article-rate').raty({
+            readOnly: true,
+            score: rate
+        });
+    }
 
     function getUrlVars()
     {
@@ -100,6 +107,10 @@
             vars[hash[0]] = hash[1];
         }
         return vars;
+    }
+
+    function kek() {
+        alert('kek');
     }
 
 

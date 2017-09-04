@@ -41,4 +41,7 @@ class Rate extends \yii\db\ActiveRecord
         $this->save();
     }
 
+    public function getCount(){
+        return Rate::find()->where(['article_id' => $this->article_id])->count();
+    }
 }

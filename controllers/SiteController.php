@@ -9,6 +9,7 @@ use app\models\Comment;
 use app\models\CommentFrom;
 use app\models\Rate;
 use app\models\Tag;
+use Aws\Common\Command\JsonCommand;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -92,6 +93,11 @@ class SiteController extends Controller
         $categories = Category::getAll();
         $comments = $article->getArticleComments();
         $commentForm = new CommentFrom();
+        if(!Yii::$app->user->isGuest){
+            $rate_model = Rate::find()->where(['user_id' => Yii::$app->user->getId(), 'article_id' => $id])->one();
+            $user_rate = !$rate_model ? 0 : $rate_model->rate;
+        }
+
 
         if (!ArticleViews::getUser(ArticleViews::getUserIp(), $article->id))
         {
@@ -111,7 +117,8 @@ class SiteController extends Controller
             'recent' => $recentArticles,
             'categories' => $categories,
             'comments' => $comments,
-            'commentForm'=>$commentForm
+            'commentForm'=>$commentForm,
+            'user_rate' => $user_rate
         ]);
     }
 
@@ -174,14 +181,5 @@ class SiteController extends Controller
         }
     }
 
-    public function actionAddRate(){
-        if(Yii::$app->request->isAjax){
-            $model = new Rate();
-            if(!Rate::findOne(Yii::$app->user->getId())){
-                $model->create();
-            }
-        }
-        
-    }
 
 }
