@@ -17,8 +17,6 @@ use yii\widgets\ActiveForm;
                             <h6><a href="<?= Url::toRoute(['site/category', 'id' => $article->category->id]) ?>"><?= $article->category->title; ?></a></h6>
 
                             <h1 class="entry-title"><a href="blog.html"><?= $article->title; ?></a></h1>
-
-
                         </header>
                         <div class="entry-content">
                             <p><?= $article->content; ?></p>
@@ -28,11 +26,20 @@ use yii\widgets\ActiveForm;
                                 <a href="#" class="btn btn-default"><?= $tag->title; ?></a>
                             <?php } ?>
                         </div>
+
+                        <?php if($user_rate === 0){ ?>
                         <div class="rate">
                             <span>Rate this article:</span>
                             <div id="article-rate"></div>
                         </div>
-
+                        <?php }else{ ?>
+                            <div class="current_rate">
+                                <span>Rate:</span>
+                                <?php for ($i = 1; $i <= $current_rate; $i++){ ?>
+                                    <img src="/public/images/img/star-on.png">
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
 
                         <div class="social-share">
 							<span

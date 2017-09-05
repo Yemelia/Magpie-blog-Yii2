@@ -88,16 +88,18 @@ class SiteController extends Controller
     {
         $article = Article::findOne($id);
         $tags = $article->tags;
+        $current_rate = $article->article_rate;
         $popularArticles = Article::getPopular();
         $recentArticles = Article::getRecent();
         $categories = Category::getAll();
         $comments = $article->getArticleComments();
         $commentForm = new CommentFrom();
+
+        $user_rate = null;
         if(!Yii::$app->user->isGuest){
             $rate_model = Rate::find()->where(['user_id' => Yii::$app->user->getId(), 'article_id' => $id])->one();
             $user_rate = !$rate_model ? 0 : $rate_model->rate;
         }
-
 
         if (!ArticleViews::getUser(ArticleViews::getUserIp(), $article->id))
         {
@@ -118,7 +120,8 @@ class SiteController extends Controller
             'categories' => $categories,
             'comments' => $comments,
             'commentForm'=>$commentForm,
-            'user_rate' => $user_rate
+            'user_rate' => $user_rate,
+            'current_rate' => $current_rate
         ]);
     }
 

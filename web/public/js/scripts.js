@@ -109,11 +109,6 @@
         return vars;
     }
 
-    function kek() {
-        alert('kek');
-    }
-
-
 })(jQuery);
 
 

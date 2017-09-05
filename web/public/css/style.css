@@ -1616,3 +1616,16 @@ p.go-back-home a:hover {
     width: 21px;
     height: 21px;
 }
+
+.current_rate{
+    margin-bottom: 10px;
+}
+
+.current_rate span{
+    font-size: 1.2em;
+}
+
+.current_rate img{
+    height: 1.5em;
+    width: 1.5em;
+}
