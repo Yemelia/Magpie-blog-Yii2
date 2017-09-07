@@ -18,7 +18,7 @@ class AjaxController extends Controller
                     $model = new Rate();
                     $model->create();
                     $number_of_rate = $model->getCount();
-                    $rate = Article::RateCounter($model, $number_of_rate);
+                    $rate = Article::RateCalculation($model, $number_of_rate);
                     echo json_encode(['rate' => $rate]);
                 }
             }

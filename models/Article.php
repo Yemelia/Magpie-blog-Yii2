@@ -219,12 +219,16 @@ class Article extends \yii\db\ActiveRecord
         return $this->getComments()->where(['status' => 1])->all();
     }
 
-    public static function RateCounter($new_rate_model, $number_of_rate)
+    //Calculate rate for article
+    public static function RateCalculation($new_rate_model, $number_of_rate)
     {
         $article_id = $new_rate_model->article_id;
         $article = Article::findOne($article_id);
-
-        $new_rate = ($article->article_rate + $new_rate_model->rate)/($number_of_rate + 1);
+        if($article->article_rate == 0){
+            $new_rate = $new_rate_model->rate;
+        }else{
+            $new_rate = ($article->article_rate + $new_rate_model->rate)/($number_of_rate + 1);
+        }
         $article->article_rate = round($new_rate);
         $article->save(false);
 

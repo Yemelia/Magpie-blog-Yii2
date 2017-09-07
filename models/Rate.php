@@ -44,4 +44,15 @@ class Rate extends \yii\db\ActiveRecord
     public function getCount(){
         return Rate::find()->where(['article_id' => $this->article_id])->count();
     }
+
+    // Get user article rate from db. if user is guest return 0
+    public static function getUserRate($id){
+        $user_rate = 0;
+        if(!Yii::$app->user->isGuest){
+            $rate_model = Rate::find()->where(['user_id' => Yii::$app->user->getId(), 'article_id' => $id])->one();
+            $user_rate = !$rate_model ? null : $rate_model->rate;
+        }
+
+        return $user_rate;
+    }
 }

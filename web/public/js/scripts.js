@@ -73,6 +73,7 @@
         });
     }());
 
+    /* === Send user rate === */
     (function () {
         $('#article-rate img').on('click', function (e) {
             var rate = $(this).attr('alt');
@@ -89,7 +90,9 @@
         });
     }());
 
+    /* === Show current article rate === */
     function currentRate(rate) {
+        $('.rate span').text('Rate:');
         $('#article-rate').raty({
             readOnly: true,
             score: rate

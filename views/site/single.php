@@ -27,14 +27,14 @@ use yii\widgets\ActiveForm;
                             <?php } ?>
                         </div>
 
-                        <?php if($user_rate === 0){ ?>
+                        <?php if($user_rate === null){ ?>
                         <div class="rate">
                             <span>Rate this article:</span>
                             <div id="article-rate"></div>
                         </div>
                         <?php }else{ ?>
                             <div class="current_rate">
-                                <span>Rate:</span>
+                                <span>Rate:</span><br>
                                 <?php for ($i = 1; $i <= $current_rate; $i++){ ?>
                                     <img src="/public/images/img/star-on.png">
                                 <?php } ?>

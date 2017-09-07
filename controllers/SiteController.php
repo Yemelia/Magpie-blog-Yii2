@@ -93,13 +93,8 @@ class SiteController extends Controller
         $recentArticles = Article::getRecent();
         $categories = Category::getAll();
         $comments = $article->getArticleComments();
+        $user_rate = Rate::getUserRate($id);
         $commentForm = new CommentFrom();
-
-        $user_rate = null;
-        if(!Yii::$app->user->isGuest){
-            $rate_model = Rate::find()->where(['user_id' => Yii::$app->user->getId(), 'article_id' => $id])->one();
-            $user_rate = !$rate_model ? 0 : $rate_model->rate;
-        }
 
         if (!ArticleViews::getUser(ArticleViews::getUserIp(), $article->id))
         {
